@@ -1,0 +1,13 @@
+[
+    {
+        "text": "Instalación de laravel",
+        "color": "black",
+        "size": "large",
+        "bold": true
+    },
+    {
+        "text": "en este tutorial aprenderemos a instalar laravel 6.x....",
+        "color": "gray",
+        "size": "small"
+    }
+]

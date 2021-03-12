@@ -1,0 +1,27 @@
+[
+    {
+        "type": "0",
+        "text": "¿el comando para desplegar el servidor es php artisan serve?",
+        "solution": "true"
+    },
+    {
+        "type": "2",
+        "text": "¿que comando se usa para crear un modelo?",
+        "options":
+        [
+            {
+                "1": "php artisan migrate"
+            },
+            {
+                "2": "php artisan make:model Model"
+            },
+            {
+                "3": "php artisan make:model Model -mc"
+            }
+        ],
+        "solution": [
+            "2",
+            "3"
+        ]
+    }
+]
