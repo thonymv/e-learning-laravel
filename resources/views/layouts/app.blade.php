@@ -1,5 +1,5 @@
 @php
-    $select = View::getSections()['select'];
+    $select = isset(View::getSections()['select'])?View::getSections()['select']:"";
 @endphp
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -28,7 +28,11 @@
     <!-- Styles -->
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
 </head>
-<body class="sb-nav-fixed">
+@auth
+    <body class="sb-nav-fixed">
+@else
+    <body class="sb-nav-fixed sb-sidenav-toggled">
+@endauth
     <div>
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <a class="navbar-brand" href="{{ url('/') }}">{{ config('app.name', 'Laravel') }}</a>
