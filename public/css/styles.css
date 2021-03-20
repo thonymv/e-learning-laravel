@@ -5310,6 +5310,7 @@ a.badge-dark:focus, a.badge-dark.focus {
   text-shadow: 0 1px 0 #fff;
   opacity: 0.5;
 }
+
 .close:hover {
   color: #000;
   text-decoration: none;
@@ -10254,7 +10255,9 @@ body {
   border-radius: 50px;
 }
 
-
+.text-item-course{
+  font-size: small;
+}
 
 
 
