@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PaypalCreatePay;
+use App\Http\Controllers\PaypalClient;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\CourseSectionController;
@@ -14,7 +16,7 @@ use App\Http\Controllers\LessonUserController;
 use App\Http\Controllers\Auth\RegisterController;
 
 //header('Access-Control-Allow-Origin: http://admin.simonethg.com');
-header('Access-Control-Allow-Origin: http://localhost:3000');
+header('Access-Control-Allow-Origin: http://localhost:80/');
 header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Methods:  POST, GET, OPTIONS, DELETE, PUT, PATCH');
 header('Access-Control-Max-Age:  1000');
@@ -94,3 +96,10 @@ Route::group(['middleware'=>'auth:api'],function ()
 Route::post('login_admin', [UserController::class, 'loginAdmin']);
 Route::post('login', [UserController::class, 'login']);
 Route::post('user', [UserController::class, 'store']);
+
+
+///Payments With Paypal
+Route::get('paypal/pago', [PaypalCreatePay::class,'CrearPago']);
+Route::get('paypal/execute', [PaypalCreatePay::class,'EjecutarPago']);
+
+Route::get('paypal/success', function(){ return "success"; } );
