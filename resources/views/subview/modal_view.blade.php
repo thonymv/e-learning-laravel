@@ -40,14 +40,18 @@
                                     <div class="col-4 col-md-3">
                                         <div
                                             class="col-5 col-md-6 p-0 pb-1 mx-auto justify-content-center align-items-center text-center">
-                                            <button class="btn btn-success btn-circle" onclick="">
-                                                <i class="fas fa-pen"></i>
+                                            <button class="btn btn-success btn-circle p-0" type="button"
+                                                data-dismiss="modal" data-target="#{{ $id_modal_2 }}" data-toggle="modal"
+                                            >
+                                                <div class="d-flex justify-content-center align-items-center text-center"
+                                                    style="width: 30px;height:30px;">
+                                                    <i class="fas fa-pen"></i>
+                                                </div>
                                             </button>
                                         </div>
                                         <div class="col-12 px-0 text-center">
                                             <p class="text-item-course text-center">
-                                                <strong>Editar lista</strong><br>
-                                                <strong>de cursos</strong>
+                                                <strong>Editar lista</strong>
                                             </p>
                                         </div>
                                     </div>
@@ -63,3 +67,15 @@
         </form>
     </div>
 </div>
+
+<script>
+    if (typeof edit_courses === "undefined") {
+        function edit_courses(id) {
+            let modal1 = "#" + id
+            let modal2 = "#" + id + "_2"
+            $(modal1).modal('hide')
+            $(modal2).modal('show')
+        }
+    }
+
+</script>

@@ -14,22 +14,25 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputEmail4">Nombre</label>
-                            <input type="text" class="form-control" value={{$section->name}} placeholder="Nombre">
+                            <input type="text" class="form-control" value={{ $section->name }} placeholder="Nombre">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="inputPassword4">Nombre en inglés</label>
-                            <input type="text" class="form-control" value={{$section->name_english}} placeholder="Nombre">
+                            <input type="text" class="form-control" value={{ $section->name_english }}
+                                placeholder="Nombre">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="inputAddress">Descripción</label>
-                        <input type="text" class="form-control" value={{$section->description}} placeholder="1234 Main St">
+                        <input type="text" class="form-control" value={{ $section->description }}
+                            placeholder="1234 Main St">
                     </div>
                     <div class="form-group">
                         <label for="inputAddress2">Descripción en ingles</label>
-                        <input type="text" class="form-control" value={{$section->description_english}}
+                        <input type="text" class="form-control" value={{ $section->description_english }}
                             placeholder="Apartment, studio, or floor">
                     </div>
+
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" data-dismiss="modal">Cancelar</button>

@@ -27,14 +27,31 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $sections = Section::inRandomOrder()->get();
+        $sections = Section::paginate(5);
+        $courses = Course::get();
+        $sectionsActive = 0;
+        $sectionsEmpty = 0;
         foreach ($sections as $section) {
+            if ($section["status"] > 0) {
+                ++$sectionsActive;
+            }
             foreach ($section->courses as $course) {
                 foreach ($course->modules as $module) {
                     $module->lessons;
                 }
             }   
+            if (count($section->courses) < 1) {
+               ++$sectionsEmpty;
+            }
         }
-        return view('home',['sections'=>$sections]);
+        $page = $sections->toArray();
+        unset($page["data"]);
+        return view('home',[
+            'sections'=>$sections,
+            'page'=>$page,
+            'sectionsActive'=>$sectionsActive,
+            'sectionsEmpty'=>$sectionsEmpty,
+            'courses'=>$courses
+        ]);
     }
 }

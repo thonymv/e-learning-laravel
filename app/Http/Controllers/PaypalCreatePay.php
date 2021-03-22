@@ -49,7 +49,7 @@ class PaypalCreatePay extends Controller
         ->setItemList($itemList)
         ->setDescription("Payment description");
 
-    $baseUrl = "http://localhost/academia-qa-laravel/public/api";
+    $baseUrl = $request->getSchemeAndHttpHost()."/academia-qa-laravel/public/api";
     $redirectUrls = new RedirectUrls();
     $redirectUrls->setReturnUrl("$baseUrl/paypal/execute")
         ->setCancelUrl("$baseUrl/paypal/cancel");
@@ -82,21 +82,21 @@ class PaypalCreatePay extends Controller
    {
     $payConfig = Config::get('pagos');
     $apiContext = new \PayPal\Rest\ApiContext(
-        new \PayPal\Auth\OAuthTokenCredential(
-          $payConfig["client_id"] ,
-          $payConfig["secret"] 
-        )
-      );
-
+      new \PayPal\Auth\OAuthTokenCredential(
+        $payConfig["client_id"] ,
+        $payConfig["secret"] 
+      )
+    );
     $paymentId = $request->input('paymentId');
     $payment = Payment::get($paymentId, $apiContext);
     $execution = new PaymentExecution();
     $execution->setPayerId($request->input('PayerID'));
-
-    $result = $payment->execute($execution, $apiContext);
-
-    return 'success';
-
+    try {
+      $result = $payment->execute($execution, $apiContext);
+      return response()->json(["response"=>true,"detail"=>$result],200);
+    }catch(Exception $ex){
+      return response()->json(["response"=>false,"detail"=>$ex],500);
+    }
    }
 
 }

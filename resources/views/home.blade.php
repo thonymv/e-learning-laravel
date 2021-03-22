@@ -11,37 +11,41 @@
         <div class="row">
             <div class="col-xl-3 col-md-6">
                 <div class="card bg-primary text-white mb-4">
-                    <div class="card-body">Primary Card</div>
-                    <div class="card-footer d-flex align-items-center justify-content-between">
-                        <a class="small text-white stretched-link" href="#">View Details</a>
-                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    <div class="card-body">
+                        <p class="h5 m-0">{{ count($sections) }}</p>
                     </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-md-6">
-                <div class="card bg-warning text-white mb-4">
-                    <div class="card-body">Warning Card</div>
                     <div class="card-footer d-flex align-items-center justify-content-between">
-                        <a class="small text-white stretched-link" href="#">View Details</a>
-                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        <p class="small text-white m-0">Secciones totales</p>
                     </div>
                 </div>
             </div>
             <div class="col-xl-3 col-md-6">
                 <div class="card bg-success text-white mb-4">
-                    <div class="card-body">Success Card</div>
+                    <div class="card-body">
+                        <p class="h5 m-0">{{ $sectionsActive }}</p>
+                    </div>
                     <div class="card-footer d-flex align-items-center justify-content-between">
-                        <a class="small text-white stretched-link" href="#">View Details</a>
-                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        <p class="small text-white m-0">Secciones activas</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-warning text-white mb-4">
+                    <div class="card-body">
+                        <p class="h5 m-0">{{ count($sections) - $sectionsActive }}</p>
+                    </div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <p class="small text-white m-0">Secciones inactivas</p>
                     </div>
                 </div>
             </div>
             <div class="col-xl-3 col-md-6">
                 <div class="card bg-danger text-white mb-4">
-                    <div class="card-body">Danger Card</div>
+                    <div class="card-body">
+                        <p class="h5 m-0">{{ $sectionsEmpty }}</p>
+                    </div>
                     <div class="card-footer d-flex align-items-center justify-content-between">
-                        <a class="small text-white stretched-link" href="#">View Details</a>
-                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        <p class="small text-white m-0">Secciones vacías</p>
                     </div>
                 </div>
             </div>
@@ -49,12 +53,12 @@
         <div class="card mb-4">
             <div class="card-header">
                 <i class="fas fa-table mr-1"></i>
-                DataTable Example
+                Mostrando {{ $page['from'] }} a {{ $page['to'] }} de {{ $page['total'] }} secciones
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                        <thead>
+                    <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
+                        <thead class="thead-light">
                             <tr>
                                 <th>Nombre</th>
                                 <th>Nombre en ingles</th>
@@ -67,7 +71,7 @@
                                 <th>Borrar</th>
                             </tr>
                         </thead>
-                        <tfoot>
+                        <tfoot class="thead-light">
                             <tr>
                                 <th>Nombre</th>
                                 <th>Nombre en ingles</th>
@@ -88,19 +92,32 @@
                                     <td class="text-center">
                                         @if ($section->status)
                                             <button data-target="#modalStatus{{ $section->id }}" data-toggle="modal"
-                                                class="btn btn-success btn-circle">
-                                                <i class="fas fa-check-circle"></i>
+                                                class="btn btn-success btn-circle p-0">
+                                                <div class="d-flex justify-content-center align-items-center text-center"
+                                                    style="width: 35px;height:35px;">
+                                                    <i class="fas fa-check-circle"></i>
+                                                </div>
                                             </button>
                                         @else
                                             <button data-target="#modalStatus{{ $section->id }}" data-toggle="modal"
-                                                class="btn btn-danger btn-circle">
-                                                <i class="fas fa-times-circle"></i>
+                                                class="btn btn-danger btn-circle p-0">
+                                                <div class="d-flex justify-content-center align-items-center text-center"
+                                                    style="width: 35px;height:35px;">
+                                                    <i class="fas fa-times-circle"></i>
+                                                </div>
                                             </button>
                                         @endif
                                     </td>
                                     <td>{{ $section->created_at }}</td>
                                     <td>{{ $section->updated_at }}</td>
-                                    <td>{{ count($section->courses) }}</td>
+                                    <td class="text-center">
+                                        <button data-target="#modalListCourses{{ $section->id }}" data-toggle="modal"
+                                            class="btn btn-info"
+                                            style="white-space: nowrap;"
+                                        >
+                                            <strong>{{ count($section->courses) }}</strong>
+                                        </button>
+                                    </td>
                                     <td class="text-center">
                                         <button data-target="#modalView{{ $section->id }}" data-toggle="modal"
                                             class="btn btn-primary">
@@ -109,7 +126,7 @@
                                     </td>
                                     <td class="text-center">
                                         <button data-target="#modalEdit{{ $section->id }}" data-toggle="modal"
-                                            class="btn btn-success">
+                                            class="btn btn-warning">
                                             <i class="fas fa-pen"></i>
                                         </button>
                                     </td>
@@ -121,29 +138,57 @@
                                     </td>
                                 </tr>
                                 @include('subview.modal_status',[
-                                    "id"=>"modalStatus$section->id",
-                                    "status"=>$section->status,
-                                    "name"=>$section->name,
-                                    "url"=>"/"
+                                "id"=>"modalStatus$section->id",
+                                "status"=>$section->status,
+                                "name"=>$section->name,
+                                "url"=>"/"
                                 ])
                                 @include('subview.modal_delete',[
-                                    "id"=>"modalDelete$section->id",
-                                    "name"=>$section->name,
-                                    "url"=>"/"
+                                "id"=>"modalDelete$section->id",
+                                "name"=>$section->name,
+                                "url"=>"/"
                                 ])
                                 @include('subview.modal_edit',[
-                                    "id"=>"modalEdit$section->id",
-                                    "section"=>$section,
-                                    "url"=>"/"
+                                "id"=>"modalEdit$section->id",
+                                "section"=>$section,
+                                "url"=>"/"
                                 ])
                                 @include('subview.modal_view',[
-                                    "id"=>"modalView$section->id",
-                                    "section"=>$section,
-                                    "url"=>"/"
+                                "id"=>"modalView$section->id",
+                                "section"=>$section,
+                                "id_modal_2"=>"modalListCourses$section->id",
+                                "url"=>"/"
+                                ])
+                                @include('subview.modal_sections_courses',[
+                                "id"=>"modalListCourses$section->id",
+                                'courses'=>$courses,
+                                "section"=>$section,
+                                "url"=>"/"
                                 ])
                             @endforeach
                         </tbody>
                     </table>
+
+                </div>
+            </div>
+            <div class="card-footer table-responsive">
+                <div class="row p-0 m-0 align-items-center">
+                    <nav class="ml-auto">
+                        <ul class="pagination mb-0">
+                            <li class="page-item"><a class="page-link" href="{{ $page['prev_page_url'] }}">
+                                    <i class="fas fa-angle-left"></i>
+                                </a></li>
+                            @for ($i = 1; $i <= $page['last_page']; $i++)
+                                <li class="page-item {{ $page['current_page'] == $i ? 'active' : '' }}">
+                                    <a class="page-link"
+                                        href="{{ $page['path'] . '?page=' . $i }}">{{ $i }}</a>
+                                </li>
+                            @endfor
+                            <li class="page-item"><a class="page-link" href="{{ $page['next_page_url'] }}">
+                                    <i class="fas fa-angle-right"></i>
+                                </a></li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
