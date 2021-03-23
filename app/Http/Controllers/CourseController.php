@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Course;
+use App\course_user;
+
+use MercadoPago\Payment;
+use MercadoPago\SDK;
+use Illuminate\Support\Facades\Config;
 
 
 class CourseController extends Controller
@@ -47,5 +52,46 @@ class CourseController extends Controller
             }
         }
         return response()->json($course,200);
+    }
+
+    public function paymentMp(Request $request,$id,$id_pay){
+
+        try {
+            $payment = $this->search($id_pay);
+            $course = Course::find($id);
+            if (
+                $payment != null && //si existe el pago en mp
+                $payment->status == "approved" && //si el pago fue aprobado
+                course_user::where('id_pay',$id_pay)->first() === null && //si el pago no ha sido registrado antes
+                $course != null &&//si el curso ingresado existe
+                floatval($course["price"]) == floatval($payment->transaction_amount)//si el precio del curso coincide con el precio cancelado
+            ) {
+                return course_user::create([
+                    'user_id' => auth()->user()->id, 
+                    'course_id' => $course["id"],
+                    'id_pay' => $payment->id,
+                    'method_pay' => 'mp'
+                ]);//crear pago
+            }
+        } catch (Exception $ex) {
+            return response()->json(["response"=>"error","err"=>$ex->getMessage()],500);
+        }
+        
+        return response()->json(["response"=>"error"],400);
+        
+    }
+
+    public function search($id_pay)
+    {
+        $config = Config::get('services')["mp"];
+        SDK::setAccessToken($config["token"]);
+        $search = Payment::search(array(
+            "id" => $id_pay
+        ))->getArrayCopy();
+        if($search){
+            return $search[0];
+        }else{
+            return null;
+        }
     }
 }

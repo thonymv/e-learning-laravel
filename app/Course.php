@@ -26,6 +26,6 @@ class Course extends Model
     }
     public function users()
     {
-        return $this->belongsToMany('App\User','course_users', 'course_id', 'user_id');
+        return $this->belongsToMany('App\User','course_users', 'course_id', 'user_id')->withPivot('id_pay','method_pay');
     }
 }
