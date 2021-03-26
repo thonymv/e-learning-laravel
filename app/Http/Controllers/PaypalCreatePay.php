@@ -8,7 +8,7 @@ use PayPal\Api\Details;
 use PayPal\Api\Item;
 use PayPal\Api\ItemList;
 use PayPal\Api\Payer;
-use PayPal\Api\Payment;
+use PayPal\Api\Payment as PaymentPP;
 use PayPal\Api\RedirectUrls;
 use PayPal\Api\Transaction;
 use PayPal\Api\PaymentExecution;
@@ -54,7 +54,7 @@ class PaypalCreatePay extends Controller
     $redirectUrls->setReturnUrl("$baseUrl/paypal/execute")
         ->setCancelUrl("$baseUrl/paypal/cancel");
 
-    $payment = new Payment();
+    $payment = new PaymentPP();
     $payment->setIntent("sale")
     ->setPayer($payer)
     ->setRedirectUrls($redirectUrls)
@@ -88,14 +88,15 @@ class PaypalCreatePay extends Controller
       )
     );
     $paymentId = $request->input('paymentId');
-    $payment = Payment::get($paymentId, $apiContext);
+    $payment = PaymentPP::get($paymentId, $apiContext);
     $execution = new PaymentExecution();
     $execution->setPayerId($request->input('PayerID'));
     try {
       $result = $payment->execute($execution, $apiContext);
-      return response()->json(["response"=>true,"detail"=>$result],200);
+      return "<title>success</title>";
     }catch(Exception $ex){
-      return response()->json(["response"=>false,"detail"=>$ex],500);
+      return "<title>failed</title>";
+
     }
    }
 

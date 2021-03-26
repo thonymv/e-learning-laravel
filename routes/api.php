@@ -63,8 +63,11 @@ Route::group(['middleware' => 'auth:api'], function () {
     //payment mercadopago (mp)
     Route::get('course/{id}/mp/{id_pay}', [CourseController::class, 'paymentMp']);
 
-    Route::middleware('check.course')->group(function () { //middleware para contenido de cursos pagos
+    //payment paypal (pp)
+    Route::get('course/{id}/pp', [CourseController::class, 'paymentPP']);
 
+    Route::middleware('check.course')->group(function () { //middleware para contenido de cursos pagos
+        
     });
 
     //Route::get('module/{id}',[ModuleController::class, 'getModule']);//agregar soporte de ingles
@@ -108,6 +111,8 @@ Route::post('user', [UserController::class, 'store']);
 ///Payments With Paypal
 Route::get('paypal/pago', [PaypalCreatePay::class, 'CrearPago']);
 Route::get('paypal/execute', [PaypalCreatePay::class, 'EjecutarPago']);
+
+Route::get('course/{id}/pp/{id_user}', [CourseController::class, 'paymentPPExec']);
 
 Route::get('paypal/cancel', function () {
     return "cancelled";

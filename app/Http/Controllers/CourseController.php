@@ -6,10 +6,24 @@ use Illuminate\Http\Request;
 
 use App\Course;
 use App\course_user;
+use Illuminate\Support\Facades\Config;
 
+//sdk mp
 use MercadoPago\Payment;
 use MercadoPago\SDK;
-use Illuminate\Support\Facades\Config;
+
+//sdk paypal
+use PayPal\Api\Amount;
+use PayPal\Api\Details;
+use PayPal\Api\Item;
+use PayPal\Api\ItemList;
+use PayPal\Api\Payer;
+use PayPal\Api\Payment as PaymentPP;
+use PayPal\Api\RedirectUrls;
+use PayPal\Api\Transaction;
+use PayPal\Api\PaymentExecution;
+
+
 
 
 class CourseController extends Controller
@@ -81,6 +95,13 @@ class CourseController extends Controller
         
     }
 
+    public function paymentPP(Request $request,$id)
+    {
+        $course = Course::find($id);
+        return $this->CrearPago($course,$request);
+    }
+    
+
     public function search($id_pay)
     {
         $config = Config::get('services')["mp"];
@@ -94,4 +115,92 @@ class CourseController extends Controller
             return null;
         }
     }
+
+    public function CrearPago($course,Request $request)
+    {
+        $payConfig = Config::get('pagos');
+        $apiContext = new \PayPal\Rest\ApiContext(
+            new \PayPal\Auth\OAuthTokenCredential(
+                $payConfig["client_id"],
+                $payConfig["secret"] 
+            )
+        );
+        $payer = new Payer();
+        $payer->setPaymentMethod("paypal");
+
+        $item1 = new Item();
+            $item1->setName($course["name"])
+                ->setCurrency('USD')
+                ->setQuantity(1)
+                ->setPrice($course["price"]);
+        $itemList = new ItemList();
+        $itemList->setItems(array($item1));
+
+        $amount = new Amount();
+        $amount->setCurrency("USD")
+        ->setTotal($course["price"]);
+
+        $transaction = new Transaction();
+        $transaction->setAmount($amount)
+            ->setItemList($itemList)
+            ->setDescription($course["description"]);
+
+        $baseUrl = $request->getSchemeAndHttpHost()."/academia-qa-laravel/public/api";
+        $redirectUrls = new RedirectUrls();
+        $redirectUrls->setReturnUrl("$baseUrl/course/".$course["id"]."/pp/".auth()->user()->id)
+            ->setCancelUrl("$baseUrl/paypal/cancel");
+
+        $payment = new PaymentPP();
+        $payment->setIntent("sale")
+        ->setPayer($payer)
+        ->setRedirectUrls($redirectUrls)
+        ->setTransactions(array($transaction));
+
+        $request = clone $payment;
+
+        try {
+            $payment->create($apiContext);
+        } catch (Exception $ex) {
+            ResultPrinter::printError("Created Payment Order Using PayPal. Please visit the URL to Approve.", "Payment", null, $request, $ex);
+            exit(1);
+        }
+
+        $approvalUrl = $payment->getApprovalLink();
+
+        return redirect($approvalUrl);
+
+    }
+
+    function paymentPPExec(Request $request,$id,$id_user)
+    {
+        $course = Course::find($id);
+        $payConfig = Config::get('pagos');
+        $apiContext = new \PayPal\Rest\ApiContext(
+            new \PayPal\Auth\OAuthTokenCredential(
+                $payConfig["client_id"] ,
+                $payConfig["secret"] 
+            )
+        );
+        $paymentId = $request->input('paymentId');
+        $payment = PaymentPP::get($paymentId, $apiContext);
+        $execution = new PaymentExecution();
+        $execution->setPayerId($request->input('PayerID'));
+        try {
+            $result = $payment->execute($execution, $apiContext);
+            if ($result) {
+                $createPay = course_user::create([
+                    'user_id' => $id_user, 
+                    'course_id' => $course["id"],
+                    'id_pay' => $paymentId,
+                    'method_pay' => 'pp'
+                ]);
+                return "<title>".$createPay["course_id"]."</title>";
+            }else{
+                return response()->json(["response"=>false,"detail"=>$result],500);
+            }
+        }catch(Exception $ex){
+            return response()->json(["response"=>false,"detail"=>$ex],500);
+        }
+    }
+
 }
