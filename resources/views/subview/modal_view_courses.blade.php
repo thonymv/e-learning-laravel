@@ -1,42 +1,46 @@
 @extends('subview.modal',['id'=>$id])
 @section('title-modal')
-    Ver la sección "{{ $section->name }}"
+    Ver el curso "{{ $course->name }}"
     @overwrite
 
 @section('content-modal')
+    <div class="d-flex justify-content-center align-items-center mb-3">
+        <div class="col-6 col-md-4">
+            <img src="{{ asset('/img/'.$course->image) }}" class="img-thumbnail rounded-circle">
+        </div>
+    </div>
     <div class="card" style="">
         <ul class="list-group list-group-flush">
-            <li class="list-group-item"><strong>Nombre: </strong>{{ $section->name }}</li>
-            <li class="list-group-item"><strong>Nombre en inglés:
-                </strong>{{ $section->name_english }}</li>
-            <li class="list-group-item"><strong>Descripción: </strong>{{ $section->description }}</li>
+            <li class="list-group-item"><strong>Nombre: </strong>{{ $course->name }}</li>
+            <li class="list-group-item"><strong>Nombre en inglés: </strong>{{ $course->name_english }}</li>
+            <li class="list-group-item"><strong>Precio: </strong>{{ $course->price }}</li>
+            <li class="list-group-item"><strong>Descripción: </strong>{{ $course->description }}</li>
             <li class="list-group-item">
-                <strong>Descripción en ingles: </strong>{{ $section->description_english }}
+                <strong>Descripción en ingles: </strong>{{ $course->description_english }}
             </li>
             <li class="list-group-item">
-                <strong>Cursos: </strong>
+                <strong>Módulos: </strong>
                 <div class="row p-0 m-0 mt-3 col-12">
-                    @foreach ($section->courses as $course)
+                    @foreach ($course->modules as $module)
                         <div class="col-4 col-md-3">
                             <div class="col-5 col-md-6 p-0 mx-auto justify-content-center align-items-center text-center">
-                                <img src="img/{{ $course->image }}" alt="..." class="img-thumbnail rounded-circle">
+                                <img src="img/{{ $module->image }}" alt="..." class="img-thumbnail rounded-circle">
                             </div>
                             <div class="col-12 px-0 text-center">
                                 <p class="text-item-course">
-                                    {{ $course->name }}
+                                    {{ $module->name }}
                                 </p>
                             </div>
                         </div>
                     @endforeach
                     <div class="col-4 col-md-3">
                         <div class="col-5 col-md-6 p-0 pb-1 mx-auto justify-content-center align-items-center text-center">
-                            <button class="btn btn-success btn-circle p-0" type="button" data-dismiss="modal"
-                                data-target="#{{ $id_modal_2 }}" data-toggle="modal">
+                            <a class="btn btn-success btn-circle p-0" href="{{ url('/courses/'.$course->id.'/modules')}}">
                                 <div class="d-flex justify-content-center align-items-center text-center"
                                     style="width: 30px;height:30px;">
                                     <i class="fas fa-pen"></i>
                                 </div>
-                            </button>
+                            </a>
                         </div>
                         <div class="col-12 px-0 text-center">
                             <p class="text-item-course text-center">
@@ -50,14 +54,3 @@
     </div>
     @overwrite
 @section('button-modal')@overwrite
-
-    <script>
-        if (typeof edit_courses === "undefined") {
-            function edit_courses(id) {
-                let modal1 = "#" + id
-                let modal2 = "#" + id + "_2"
-                $(modal1).modal('hide')
-                $(modal2).modal('show')
-            }
-        }
-    </script>

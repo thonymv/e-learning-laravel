@@ -40,8 +40,8 @@ $select = isset(View::getSections()['select']) ? View::getSections()['select'] :
             <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
                 <a class="navbar-brand" href="{{ url('/') }}">{{ config('app.name', 'Laravel') }}</a>
                 @auth
-                    <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i
-                            class="fas fa-bars"></i></button>
+                    <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#">
+                        <i class="fas fa-bars"></i></button>
                     <!-- Navbar Search-->
                     <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
                         @csrf
@@ -81,8 +81,9 @@ $select = isset(View::getSections()['select']) ? View::getSections()['select'] :
                                     <a class="dropdown-item" href="#">Settings</a>
                                     <a class="dropdown-item" href="#">Activity Log</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                    document.getElementById('logout-form').submit();">
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
+                                                                            document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST"
@@ -104,7 +105,7 @@ $select = isset(View::getSections()['select']) ? View::getSections()['select'] :
                                     <a class="nav-link collapsed {{ $select == '/' || $select == '/register' ? 'active' : '' }}"
                                         href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false"
                                         aria-controls="collapseLayouts">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                        <div class="sb-nav-link-icon"><i class="fas fa-layer-group"></i></div>
                                         Secciones
                                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                     </a>
@@ -114,41 +115,57 @@ $select = isset(View::getSections()['select']) ? View::getSections()['select'] :
                                             <a class="nav-link {{ $select == '/' ? 'active' : '' }}"
                                                 href="{{ url('/') }}">Gestionar</a>
                                             <a class="nav-link {{ $select == '/register' ? 'active' : '' }}"
-                                                href="{{ url('/') }}">Registrar</a>
+                                                href="{{ url('/sections/register') }}">Registrar</a>
+                                        </nav>
+                                    </div>
+                                    <a class="nav-link collapsed {{ $select == '/courses' || $select == '/courses/register' ? 'active' : '' }}"
+                                        href="#" data-toggle="collapse" data-target="#collapseLayouts2"
+                                        aria-expanded="false" aria-controls="collapseLayouts2">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
+                                        Cursos
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="collapseLayouts2" aria-labelledby="headingOne"
+                                        data-parent="#sidenavAccordion">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link {{ $select == '/courses' ? 'active' : '' }}"
+                                                href="{{ url('/courses') }}">Gestionar</a>
+                                            <a class="nav-link {{ $select == '/courses/register' ? 'active' : '' }}"
+                                                href="{{ url('/courses/register') }}">Registrar</a>
                                         </nav>
                                     </div>
 
                                     <div class="sb-sidenav-menu-heading">Usuarios</div>
-                                    <a class="nav-link collapsed {{ $select == '/' || $select == '/register' ? 'active' : '' }}"
-                                        href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false"
-                                        aria-controls="collapseLayouts">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                    <a class="nav-link collapsed {{ $select == '/clients' || $select == '/clients/register' ? 'active' : '' }}"
+                                        href="#" data-toggle="collapse" data-target="#collapseLayouts3"
+                                        aria-expanded="false" aria-controls="collapseLayouts3">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                                         Clientes
                                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                     </a>
-                                    <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
+                                    <div class="collapse" id="collapseLayouts3" aria-labelledby="headingOne"
                                         data-parent="#sidenavAccordion">
                                         <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link {{ $select == '/' ? 'active' : '' }}"
-                                                href="{{ url('/') }}">Gestionar</a>
-                                            <a class="nav-link {{ $select == '/register' ? 'active' : '' }}"
-                                                href="{{ url('/') }}">Registrar</a>
+                                            <a class="nav-link {{ $select == '/clients' ? 'active' : '' }}"
+                                                href="{{ url('/clients') }}">Gestionar</a>
+                                            <a class="nav-link {{ $select == '/clients/register' ? 'active' : '' }}"
+                                                href="{{ url('/clients/register') }}">Registrar</a>
                                         </nav>
                                     </div>
-                                    <a class="nav-link collapsed {{ $select == '/' || $select == '/register' ? 'active' : '' }}"
+                                    <a class="nav-link collapsed {{ $select == '/admin' || $select == '/admin/register' ? 'active' : '' }}"
                                         href="#" data-toggle="collapse" data-target="#collapseAdmin" aria-expanded="false"
-                                        aria-controls="collapseLayouts">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                        aria-controls="collapseAdmin">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-user-shield"></i></div>
                                         Administradores
                                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                     </a>
                                     <div class="collapse" id="collapseAdmin" aria-labelledby="headingOne"
                                         data-parent="#sidenavAccordion">
                                         <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link {{ $select == '/' ? 'active' : '' }}"
-                                                href="{{ url('/') }}">Gestionar</a>
-                                            <a class="nav-link {{ $select == '/register' ? 'active' : '' }}"
-                                                href="{{ url('/') }}">Registrar</a>
+                                            <a class="nav-link {{ $select == '/admin' ? 'active' : '' }}"
+                                                href="{{ url('/admin') }}">Gestionar</a>
+                                            <a class="nav-link {{ $select == '/admin/register' ? 'active' : '' }}"
+                                                href="{{ url('/admin/register') }}">Registrar</a>
                                         </nav>
                                     </div>
                                 </div>
@@ -177,6 +194,7 @@ $select = isset(View::getSections()['select']) ? View::getSections()['select'] :
                     }
                 });
             });
+
         </script>
     </body>
 

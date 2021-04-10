@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Lesson extends Model
 {
     protected $fillable = [
-        'name','module_id','content','test','status','name_english'
+        'name','module_id','status','name_english'
     ];
 
     public function module()
@@ -17,5 +17,9 @@ class Lesson extends Model
     public function users()
     {
         return $this->belongsToMany('App\User','lesson_users')->withPivot('percent');
+    }
+    public function nodes()
+    {
+        return $this->hasMany('App\node_lesson', 'lesson_id', 'id');
     }
 }

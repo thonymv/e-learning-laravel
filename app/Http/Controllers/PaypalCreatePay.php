@@ -93,10 +93,9 @@ class PaypalCreatePay extends Controller
     $execution->setPayerId($request->input('PayerID'));
     try {
       $result = $payment->execute($execution, $apiContext);
-      return "<title>success</title>";
+      echo json_encode((array)$result);exit();
     }catch(Exception $ex){
       return "<title>failed</title>";
-
     }
    }
 

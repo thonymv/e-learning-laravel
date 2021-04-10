@@ -10259,7 +10259,30 @@ body {
   font-size: small;
 }
 
+.btn-edit{
+  position: absolute;
+  margin-left: 75px;
+}
 
+.input-file{
+  display: none;
+}
+
+.img-edit{
+  width:100%;
+  height:100%;
+}
+
+.thumbnail-image-edit{
+  border-radius:100%;
+  border-width:1px;
+  border-style: solid;
+  width:100%;
+  height:100%;
+  padding: 15%;
+  border-color:#d3d3d3;
+  background-color: white;
+}
 
 
 

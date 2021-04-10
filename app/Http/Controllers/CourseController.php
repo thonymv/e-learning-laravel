@@ -196,10 +196,10 @@ class CourseController extends Controller
                 ]);
                 return "<title>".$createPay["course_id"]."</title>";
             }else{
-                return response()->json(["response"=>false,"detail"=>$result],500);
+                return "<title>failed</title>";
             }
         }catch(Exception $ex){
-            return response()->json(["response"=>false,"detail"=>$ex],500);
+            return "<title>failed</title>";
         }
     }
 
