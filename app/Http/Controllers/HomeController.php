@@ -144,7 +144,7 @@ class HomeController extends Controller
     }
 
 
-    public function nodes($id_course,$id_module,$id_lesson)
+    public function nodes($id_course,$id_module,$id_lesson,$message = "",$err = false)
     {
         $course = Course::find($id_course);
         $module = Module::find($id_module);
@@ -175,8 +175,22 @@ class HomeController extends Controller
             'nodes'=>$nodes,
             'page' => $page,
             'nodesActive'=>$nodesActive,
-            'nodesEmpty'=>$nodesEmpty
+            'nodesEmpty'=>$nodesEmpty,
+            'message'=>$message,
+            'err'=>$err
         ]);
+    }
+
+    public function node_content_register(Request $request,$id_course,$id_module,$id_lesson){
+        $data = $request->all();
+        $data["success"] = false;
+        $message = "Hubo un error al registrar el nodo tipo \"Contenido\" ";
+        $err = false;
+        if(node_lesson::create($data)){
+            $message = "Se ha registrado el nodo tipo \"Contenido\" exitosamente";
+            $err = false;
+        }
+        return $this->nodes($id_course,$id_module,$id_lesson,$message,$err);
     }
 
 }

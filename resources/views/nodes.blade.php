@@ -3,6 +3,7 @@
 
 @section('content')
     <div class="container-fluid">
+
         <h1 class="mt-4">Nodos de la lección "{{ $lesson->name }}"</h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item "><a href="{{ url('/courses') }}">Cursos</a></li>
@@ -21,6 +22,14 @@
                 </a>
             </li>
         </ol>
+        @if ($message != "")
+            <div class="alert alert-{{ $err?'danger':'success' }} alert-dismissible fade show" role="alert">
+                <strong>{{$message}}!</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
         <div class="row">
             <div class="col-xl-3 col-md-6">
                 <div class="card bg-primary text-white mb-4">
@@ -78,6 +87,7 @@
                         @include('subview.modal_edit_node_c',[
                         "id"=>"modalRegisterC",
                         "create"=>true,
+                        "lesson_id"=>$lesson->id,
                         "url"=>"/courses/$course->id/modules/$module->id/lessons/$lesson->id/nodes"
                         ])
                         <button title="Registrar &quot;Verdadero o Falso&quot;" data-target="#modalRegisterVr" data-toggle="modal" class="btn btn-primary btn-circle p-0 ml-2">
@@ -121,8 +131,8 @@
                     <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
                         <thead class="thead-light">
                             <tr>
-                                <th>Nombre</th>
-                                <th>Nombre en ingles</th>
+                                <th>Título</th>
+                                <th>Título en ingles</th>
                                 <th>Creado en</th>
                                 <th>Modificado en</th>
                                 <th>Opciones</th>
@@ -133,8 +143,8 @@
                         </thead>
                         <tfoot class="thead-light">
                             <tr>
-                                <th>Nombre</th>
-                                <th>Nombre en ingles</th>
+                                <th>Título</th>
+                                <th>Título en ingles</th>
                                 <th>Creado en</th>
                                 <th>Modificado en</th>
                                 <th>Opciones</th>
@@ -147,10 +157,10 @@
                             @foreach ($nodes as $node)
                                 <tr>
                                     <td>
-                                        {{ $node->name }}
+                                        {{ $node->title }}
                                     </td>
                                     <td>
-                                        {{ $node->name_english }}
+                                        {{ $node->title_english }}
                                     </td>
                                     <td>{{ $node->created_at }}</td>
                                     <td>{{ $node->updated_at }}</td>

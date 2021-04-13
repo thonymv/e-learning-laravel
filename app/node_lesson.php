@@ -9,7 +9,7 @@ class node_lesson extends Model
     public $table = "node_lesson";
 
     protected $fillable = [
-        'title','content','title_english','content_english','image','type_id','lesson_id'
+        'title','content','title_english','content_english','image','type_id','lesson_id','success'
     ];
 
     public function lesson()

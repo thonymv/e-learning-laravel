@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class options_node_lesson extends Model
 {
+    public $table = "options_node_lesson";
     protected $fillable = [
         'position_init','position_success','response','response_english','success','node_lesson_id'
     ];
