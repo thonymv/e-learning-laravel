@@ -7,7 +7,7 @@
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active"><a href="{{ url('/courses') }}">Cursos</a></li>
             <li class="breadcrumb-item active">{{ $course->name }}</li>
-            <li class="breadcrumb-item active">Módulos</li>
+            <li class="breadcrumb-item active"><a href="{{ url("/courses/$course->id/modules") }}">Módulos</a></li>
         </ol>
         <div class="row">
             <div class="col-xl-3 col-md-6">
@@ -66,7 +66,7 @@
                         @include('subview.modal_edit_module',[
                         "id"=>"modalRegister",
                         "create"=>true,
-                        "url"=>"/"
+                        "url"=>"/courses/$course->id/modules"
                         ])
                     </div>
                 </div>

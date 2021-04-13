@@ -11,7 +11,6 @@
 |
 */
 
-
 Auth::routes();
 
 Route::get('/', 'HomeController@index');
@@ -19,3 +18,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/courses', 'HomeController@courses')->name('courses');
 Route::get('/courses/{id}/modules', 'HomeController@modules')->name('modules');
 Route::get('/courses/{id_course}/modules/{id_module}/lessons', 'HomeController@lessons')->name('lessons');
+Route::get('/courses/{id_course}/modules/{id_module}/lessons/{id_lesson}/nodes', 'HomeController@nodes')->name('nodes');

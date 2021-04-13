@@ -19,7 +19,7 @@ class CreateOptionsNodeLessonTable extends Migration
             $table->bigInteger('position_init');//posición inicial para test tipo reorganizar
             $table->bigInteger('position_success');//posición correcta para test tipo reorganizar
             $table->string('response');//texto para uso entre los diferentes tipos de test
-            $table->boolean('success');//booleano que determina si es correcta las respuesta para test de selección simple o verdadero o falso
+            $table->boolean('success');//booleano que determina si es correcta las respuesta para test de selección compuesta
             $table->timestamps();
         });
     }

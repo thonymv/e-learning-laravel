@@ -7,9 +7,13 @@
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item active"><a href="{{ url('/courses') }}">Cursos</a></li>
             <li class="breadcrumb-item active">{{ $course->name }}</li>
-            <li class="breadcrumb-item active"><a href="{{ url('/courses/'.$course->id.'/modules') }}">Módulos</a></li>
+            <li class="breadcrumb-item active">
+                <a href="{{ url("/courses/$course->id/modules") }}">Módulos</a>
+            </li>
             <li class="breadcrumb-item active">{{ $module->name }}</li>
-            <li class="breadcrumb-item active">Lecciones</li>
+            <li class="breadcrumb-item active">
+                <a href="{{ url("/courses/$course->id/modules/$module->id/lessons") }}">Lecciones</a>
+            </li>
         </ol>
         <div class="row">
             <div class="col-xl-3 col-md-6">
@@ -67,6 +71,11 @@
                         </button>
                     </div>
                 </div>
+                @include('subview.modal_edit_lesson',[
+                "id"=>"modalRegister",
+                "create"=>true,
+                "url"=>"/courses/$course->id/modules/$module->id/lessons"
+                ])
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -128,10 +137,14 @@
                                     <td>{{ $lesson->created_at }}</td>
                                     <td>{{ $lesson->updated_at }}</td>
                                     <td class="text-center">
-                                        <button data-target="#modalListCourses{{ $lesson->id }}" data-toggle="modal"
-                                            class="btn btn-info" style="white-space: nowrap;">
+                                        <a
+                                            href="{{url(
+                                                "/courses/$course->id/modules/$module->id/lessons/$lesson->id/nodes"
+                                            )}}"
+                                            class="btn btn-info" style="white-space: nowrap;"
+                                        >
                                             <strong>{{ count($lesson->nodes) }}</strong>
-                                        </button>
+                                        </a>
                                     </td>
                                     <td class="text-center">
                                         <button data-target="#modalView{{ $lesson->id }}" data-toggle="modal"
@@ -152,6 +165,29 @@
                                         </button>
                                     </td>
                                 </tr>
+                                @include('subview.modal_edit_lesson',[
+                                "id"=>"modalEdit$lesson->id",
+                                "module"=>$lesson,
+                                "url"=>"/courses/$course->id/modules/$module->id/lessons"
+                                ])
+                                @include('subview.modal_status',[
+                                "id"=>"modalStatus$lesson->id",
+                                "status"=>$lesson->status,
+                                "label"=>"la lección",
+                                "name"=>$lesson->name,
+                                "url"=>"/courses/$course->id/modules/$module->id/lessons"
+                                ])
+                                @include('subview.modal_view_lessons',[
+                                "id"=>"modalView$lesson->id",
+                                "lesson"=>$lesson,
+                                "url"=>"/courses/$course->id/modules/$module->id/lessons"
+                                ])
+                                @include('subview.modal_delete',[
+                                "id"=>"modalDelete$lesson->id",
+                                "label"=>"la lección",
+                                "name"=>$lesson->name,
+                                "url"=>"/courses/$course->id/modules/$module->id/lessons"
+                                ])
                             @endforeach
                         </tbody>
                     </table>

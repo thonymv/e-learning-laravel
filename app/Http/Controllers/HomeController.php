@@ -9,6 +9,8 @@ use App\Course;
 use App\Module;
 use App\course_section;
 use App\Lesson;
+use App\node_lesson;
+
 
 class HomeController extends Controller
 {
@@ -41,7 +43,7 @@ class HomeController extends Controller
                 foreach ($course->modules as $module) {
                     $module->lessons;
                 }
-            }   
+            }
             if (count($section->courses) < 1) {
                ++$sectionsEmpty;
             }
@@ -108,6 +110,7 @@ class HomeController extends Controller
             'modulesEmpty'=>$modulesEmpty
         ]);
     }
+
     public function lessons($id_course,$id_module)
     {
         $course = Course::find($id_course);
@@ -139,4 +142,41 @@ class HomeController extends Controller
             'lessonsEmpty'=>$lessonsEmpty
         ]);
     }
+
+
+    public function nodes($id_course,$id_module,$id_lesson)
+    {
+        $course = Course::find($id_course);
+        $module = Module::find($id_module);
+        $lesson = Lesson::find($id_lesson);
+        if (!$course || !$module) {
+            abort(404);
+        }
+        $nodes = node_lesson::where('lesson_id',$id_lesson)->paginate(5);
+        $nodesActive = 0;
+        $nodesEmpty = 0;
+        foreach ($nodes as $node) {
+            if ($node["status"] > 0) {
+                ++$nodesActive;
+            }
+            if (count($node->options) < 1) {
+                ++$nodesEmpty;
+            }
+        }
+        $page = $nodes->toArray();
+        unset($page["data"]);
+        unset($course["modules"]);
+        unset($module["lessons"]);
+        unset($lesson["options"]);
+        return view('nodes',[
+            'course'=>$course,
+            'module'=>$module,
+            'lesson'=>$lesson,
+            'nodes'=>$nodes,
+            'page' => $page,
+            'nodesActive'=>$nodesActive,
+            'nodesEmpty'=>$nodesEmpty
+        ]);
+    }
+
 }
