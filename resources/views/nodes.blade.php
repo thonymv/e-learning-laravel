@@ -69,16 +69,21 @@
                     <i class="fas fa-table mr-1"></i>
                     Mostrando {{ $page['from']?$page['from']:0 }} a {{ $page['to']?$page['to']:0 }} de {{ $page['total'] }} Nodos
                     <div class="ml-auto">
-                        <button title="Registrar &quot;Contenido&quot;" data-target="#modalRegister" data-toggle="modal" class="btn btn-success btn-circle p-0">
+                        <button title="Registrar &quot;Contenido&quot;" data-target="#modalRegisterC" data-toggle="modal" class="btn btn-success btn-circle p-0">
                             <div class="d-flex justify-content-center align-items-center text-center"
                                 style="width: 35px;height:35px;">
-                                <i class="fas fa-plus"></i>
+                                @svg('content', 'svg-content')
                             </div>
                         </button>
+                        @include('subview.modal_edit_node_c',[
+                        "id"=>"modalRegisterC",
+                        "create"=>true,
+                        "url"=>"/courses/$course->id/modules/$module->id/lessons/$lesson->id/nodes"
+                        ])
                         <button title="Registrar &quot;Verdadero o Falso&quot;" data-target="#modalRegisterVr" data-toggle="modal" class="btn btn-primary btn-circle p-0 ml-2">
                             <div class="d-flex justify-content-center align-items-center text-center"
                                 style="width: 35px;height:35px;">
-                                <i class="fas fa-plus"></i>
+                                @svg('true-false', 'svg-content')
                             </div>
                         </button>
                         @include('subview.modal_edit_node_vr',[
@@ -86,10 +91,10 @@
                         "create"=>true,
                         "url"=>"/courses/$course->id/modules/$module->id/lessons/$lesson->id/nodes"
                         ])
-                        <button title="Registrar &quot;Selección&quot;" data-target="#modalRegisterS" data-toggle="modal" class="btn btn-info btn-circle p-0 ml-2">
+                        <button title="Registrar &quot;Selección simple&quot;" data-target="#modalRegisterS" data-toggle="modal" class="btn btn-info btn-circle p-0 ml-2">
                             <div class="d-flex justify-content-center align-items-center text-center"
                                 style="width: 35px;height:35px;">
-                                <i class="fas fa-plus"></i>
+                                @svg('check-list', 'svg-content')
                             </div>
                         </button>
                         @include('subview.modal_edit_node_s',[
@@ -97,10 +102,10 @@
                         "create"=>true,
                         "url"=>"/courses/$course->id/modules/$module->id/lessons/$lesson->id/nodes"
                         ])
-                        <button title="Registrar &quot;Reorganizar&quot;" data-target="#modalRegisterR" data-toggle="modal" class="btn btn-warning btn-circle p-0 ml-2">
+                        <button title="Registrar &quot;Reorganizar elementos&quot;" data-target="#modalRegisterR" data-toggle="modal" class="btn btn-dark btn-circle p-0 ml-2">
                             <div class="d-flex justify-content-center align-items-center text-center"
                                 style="width: 35px;height:35px;">
-                                <i class="fas fa-plus"></i>
+                                @svg('top', 'svg-content')
                             </div>
                         </button>
                         @include('subview.modal_edit_node_r',[

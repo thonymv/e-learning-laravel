@@ -1,0 +1,78 @@
+@extends('subview.modal',['id'=>$id])
+@if (isset($create))
+    @section('title-modal')
+        Crear nodo tipo "Contenido"
+        @overwrite
+    @else
+    @section('title-modal')
+        Editar el nodo "{{ !isset($create) && isset($node) && $node ? $node->name : '' }}"
+        @overwrite
+    @endif
+
+    @section('content-modal')
+        <div class="form-group">
+            <div class="row justify-content-center">
+                <div class="col-6 col-md-4 my-2">
+                    <div class="thumbnail-image-edit">
+                        <img id="imagePreview{{ !isset($create) && isset($node) && $node ? $node->id : '' }}"
+                            src="{{ !isset($create) && isset($node) && $node ? asset("/img/$node->image") : asset('/img/picture.svg') }}"
+                            class="img-edit">
+                    </div>
+                </div>
+                <button class="btn btn-success rounded-circle btn-edit" type="button"
+                    onclick="escogerFoto('imagen{{ !isset($create) && isset($node) && $node ? $node->id : '' }}')">
+                    <i class="fas fa-pen"></i>
+                </button>
+            </div>
+            <input type="file" onchange="imagenPrevia(this,'imagePreview{{ !isset($create) && isset($node) && $node ? $node->id : '' }}')"
+                name="imagen" class="input-file" id="imagen{{ !isset($create) && isset($node) && $node ? $node->id : '' }}">
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="inputEmail4">Título</label>
+                <input type="text" class="form-control" value="{{ !isset($create) && isset($node) && $node ? $node->title : '' }}"
+                    placeholder="Ingrese el título">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="inputPassword4">Título en inglés</label>
+                <input type="text" class="form-control" value="{{ !isset($create) && isset($node) && $node ? $node->title_english : '' }}"
+                    placeholder="Ingrese el título">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputAddress">Contenido</label>
+            <textarea class="form-control" rows="4"
+                placeholder="Ingrese el contenido">{{ !isset($create) && isset($node) && $node ? $node->content : '' }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="inputAddress">Contenido en ingles</label>
+            <textarea class="form-control" rows="4"
+                placeholder="Ingrese el contenido">{{ !isset($create) && isset($node) && $node ? $node->content_english : '' }}</textarea>
+        </div>
+        @overwrite
+
+    @section('button-modal')
+        <button class="btn btn-success" onclick="">Guardar</button>
+        @overwrite
+
+        <script>
+            if (typeof imagenPrevia === "undefined") {
+
+                function imagenPrevia(input, idImg) {
+                    if (input.files && input.files[0]) {
+                        var reader = new FileReader()
+                        reader.onload = function(e) {
+                            imgHtml = document.getElementById(idImg);
+                            imgHtml.src = e.target.result
+
+                        }
+                        reader.readAsDataURL(input.files[0])
+                    }
+                }
+
+                function escogerFoto(id) {
+                    document.getElementById(id).click()
+                }
+            }
+
+        </script>

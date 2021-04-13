@@ -10284,8 +10284,11 @@ body {
   background-color: white;
 }
 
-
-
+.svg-content{
+    height: 100%!important;
+    padding: 20%!important;
+    fill: white!important;
+}
 
 
 
