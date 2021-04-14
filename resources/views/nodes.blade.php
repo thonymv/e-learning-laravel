@@ -78,11 +78,8 @@
                     <i class="fas fa-table mr-1"></i>
                     Mostrando {{ $page['from']?$page['from']:0 }} a {{ $page['to']?$page['to']:0 }} de {{ $page['total'] }} Nodos
                     <div class="ml-auto">
-                        <button title="Registrar &quot;Contenido&quot;" data-target="#modalRegisterC" data-toggle="modal" class="btn btn-success btn-circle p-0">
-                            <div class="d-flex justify-content-center align-items-center text-center"
-                                style="width: 35px;height:35px;">
-                                @svg('content', 'svg-content')
-                            </div>
+                        <button title="Registrar &quot;Contenido&quot;" data-target="#modalRegisterC" data-toggle="modal" class="btn btn-success list-type-node p-0">
+                            @svg('content', 'svg-content')
                         </button>
                         @include('subview.modal_edit_node_c',[
                         "id"=>"modalRegisterC",
@@ -90,33 +87,24 @@
                         "lesson_id"=>$lesson->id,
                         "url"=>"/courses/$course->id/modules/$module->id/lessons/$lesson->id/nodes"
                         ])
-                        <button title="Registrar &quot;Verdadero o Falso&quot;" data-target="#modalRegisterVr" data-toggle="modal" class="btn btn-primary btn-circle p-0 ml-2">
-                            <div class="d-flex justify-content-center align-items-center text-center"
-                                style="width: 35px;height:35px;">
-                                @svg('true-false', 'svg-content')
-                            </div>
+                        <button title="Registrar &quot;Verdadero o Falso&quot;" data-target="#modalRegisterVr" data-toggle="modal" class="btn btn-primary list-type-node p-0 ml-2">
+                            @svg('true-false', 'svg-content')
                         </button>
                         @include('subview.modal_edit_node_vr',[
                         "id"=>"modalRegisterVr",
                         "create"=>true,
                         "url"=>"/courses/$course->id/modules/$module->id/lessons/$lesson->id/nodes"
                         ])
-                        <button title="Registrar &quot;Selección simple&quot;" data-target="#modalRegisterS" data-toggle="modal" class="btn btn-info btn-circle p-0 ml-2">
-                            <div class="d-flex justify-content-center align-items-center text-center"
-                                style="width: 35px;height:35px;">
-                                @svg('check-list', 'svg-content')
-                            </div>
+                        <button title="Registrar &quot;Selección simple&quot;" data-target="#modalRegisterS" data-toggle="modal" class="btn btn-info list-type-node p-0 ml-2">
+                            @svg('check-list', 'svg-content')
                         </button>
                         @include('subview.modal_edit_node_s',[
                         "id"=>"modalRegisterS",
                         "create"=>true,
                         "url"=>"/courses/$course->id/modules/$module->id/lessons/$lesson->id/nodes"
                         ])
-                        <button title="Registrar &quot;Reorganizar elementos&quot;" data-target="#modalRegisterR" data-toggle="modal" class="btn btn-dark btn-circle p-0 ml-2">
-                            <div class="d-flex justify-content-center align-items-center text-center"
-                                style="width: 35px;height:35px;">
-                                @svg('top', 'svg-content')
-                            </div>
+                        <button title="Registrar &quot;Reorganizar elementos&quot;" data-target="#modalRegisterR" data-toggle="modal" class="btn btn-dark list-type-node p-0 ml-2">
+                            @svg('top', 'svg-content')
                         </button>
                         @include('subview.modal_edit_node_r',[
                         "id"=>"modalRegisterR",
@@ -131,6 +119,7 @@
                     <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
                         <thead class="thead-light">
                             <tr>
+                                <th>Tipo</th>
                                 <th>Título</th>
                                 <th>Título en ingles</th>
                                 <th>Creado en</th>
@@ -143,6 +132,7 @@
                         </thead>
                         <tfoot class="thead-light">
                             <tr>
+                                <th>Tipo</th>
                                 <th>Título</th>
                                 <th>Título en ingles</th>
                                 <th>Creado en</th>
@@ -156,6 +146,30 @@
                         <tbody>
                             @foreach ($nodes as $node)
                                 <tr>
+                                    <td>
+                                        @switch($node->type_id)
+                                            @case(1)
+                                                <button class="btn btn-success list-type-node p-0">
+                                                    @svg('content', 'svg-content')
+                                                </button>
+                                                @break
+                                            @case(2)
+                                                <button class="btn btn-primary list-type-node p-0">
+                                                    @svg('true-false', 'svg-content')
+                                                </button>
+                                                @break
+                                            @case(3)
+                                                <button class="btn btn-info list-type-node p-0">
+                                                    @svg('check-list', 'svg-content')
+                                                </button>
+                                                @break
+                                            @case(4)
+                                                <button class="btn btn-dark list-type-node p-0">
+                                                    @svg('top', 'svg-content')
+                                                </button>
+                                                @break
+                                        @endswitch
+                                    </td>
                                     <td>
                                         {{ $node->title }}
                                     </td>
@@ -188,6 +202,11 @@
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </td>
+                                    @include('subview.modal_edit_node_c',[
+                                    "id"=>"modalEdit$node->id",
+                                    "node"=>$node,
+                                    "url"=>"/courses/$course->id/modules/$module->id/lessons/$lesson->id/nodes"
+                                    ])
                                 </tr>
                             @endforeach
                         </tbody>

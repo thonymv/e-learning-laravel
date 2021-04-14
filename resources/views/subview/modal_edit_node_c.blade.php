@@ -30,29 +30,29 @@
                     <i class="fas fa-pen"></i>
                 </button>
             </div>
-            <input type="file" onchange="imagenPrevia(this,'imagePreview{{ !isset($create) && isset($node) && $node ? $node->id : '' }}')"
+            <input required type="file" onchange="imagenPrevia(this,'imagePreview{{ !isset($create) && isset($node) && $node ? $node->id : '' }}')"
                 name="image" class="input-file" id="imagen{{ !isset($create) && isset($node) && $node ? $node->id : '' }}">
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="inputEmail4">Título</label>
-                <input name="title" type="text" class="form-control" value="{{ !isset($create) && isset($node) && $node ? $node->title : '' }}"
+                <input required name="title" type="text" class="form-control" value="{{ !isset($create) && isset($node) && $node ? $node->title : '' }}"
                     placeholder="Ingrese el título">
             </div>
             <div class="form-group col-md-6">
                 <label for="inputPassword4">Título en inglés</label>
-                <input name="title_english" type="text" class="form-control" value="{{ !isset($create) && isset($node) && $node ? $node->title_english : '' }}"
+                <input required name="title_english" type="text" class="form-control" value="{{ !isset($create) && isset($node) && $node ? $node->title_english : '' }}"
                     placeholder="Ingrese el título">
             </div>
         </div>
         <div class="form-group">
             <label for="inputAddress">Contenido</label>
-            <textarea class="form-control" rows="4" name="content"
+            <textarea required class="form-control" rows="4" name="content"
                 placeholder="Ingrese el contenido">{{ !isset($create) && isset($node) && $node ? $node->content : '' }}</textarea>
         </div>
         <div class="form-group">
             <label for="inputAddress">Contenido en ingles</label>
-            <textarea class="form-control" rows="4" name="content_english"
+            <textarea required class="form-control" rows="4" name="content_english"
                 placeholder="Ingrese el contenido">{{ !isset($create) && isset($node) && $node ? $node->content_english : '' }}</textarea>
         </div>
         @overwrite

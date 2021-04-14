@@ -1,7 +1,7 @@
 <div class="modal fade" id="{{$id}}" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         @if (isset($id_form))
-            <form id="{{ $id_form }}" action="{{ url(isset($action)?$action:'') }}" method="POST">
+            <form id="{{ $id_form }}" action="{{ url(isset($action)?$action:'') }}" method="POST" enctype="multipart/form-data">
                 @csrf
         @endif
             <div class="modal-content">

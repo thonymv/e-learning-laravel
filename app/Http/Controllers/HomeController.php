@@ -10,7 +10,7 @@ use App\Module;
 use App\course_section;
 use App\Lesson;
 use App\node_lesson;
-
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -168,6 +168,9 @@ class HomeController extends Controller
         unset($course["modules"]);
         unset($module["lessons"]);
         unset($lesson["options"]);
+        //$files = Storage::files('img');
+        //$visibility = Storage::url('img/1618363814.jpg');
+        //echo '<img src="'.asset("$visibility").'" />';exit();
         return view('nodes',[
             'course'=>$course,
             'module'=>$module,
@@ -176,21 +179,57 @@ class HomeController extends Controller
             'page' => $page,
             'nodesActive'=>$nodesActive,
             'nodesEmpty'=>$nodesEmpty,
+            //'files'=>$files,
             'message'=>$message,
             'err'=>$err
         ]);
     }
 
     public function node_content_register(Request $request,$id_course,$id_module,$id_lesson){
-        $data = $request->all();
-        $data["success"] = false;
         $message = "Hubo un error al registrar el nodo tipo \"Contenido\" ";
         $err = false;
+        $data = $request->all();
+        $data["success"] = false;
+        $file = $this->put_file($request);
+        if(!$file){
+            return $this->nodes($id_course,$id_module,$id_lesson,$message,$err);
+        }
+        $data["image"] = $file;
         if(node_lesson::create($data)){
             $message = "Se ha registrado el nodo tipo \"Contenido\" exitosamente";
             $err = false;
         }
         return $this->nodes($id_course,$id_module,$id_lesson,$message,$err);
+    }
+
+    public function node_register (Request $request,$id_course,$id_module,$id_lesson){
+        $data = $request->all();
+        switch (intval($data['type_id'])) {
+            case 1:
+                $this->node_content_register($request,$id_course,$id_module,$id_lesson);
+                break;
+            case 2:
+                
+                break;
+            case 3:
+        
+                break;
+            case 4:
+            
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+    }
+
+    public function put_file(Request $request){
+        $time = time();
+        $path = $request->file('image')->storeAs(
+            'img', "$time.jpg" ,'public_file'
+        );
+        return $path?"$time.jpg":false;
     }
 
 }
