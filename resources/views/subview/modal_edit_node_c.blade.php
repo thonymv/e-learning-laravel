@@ -14,46 +14,38 @@
     @endif
 
     @section('content-modal')
-    <input type="hidden" name="lesson_id" value="{{ isset($lesson->id)?$lesson->id:$node->lesson_id }}">
-    <input type="hidden" name="type_id" value="1">
+        <input type="hidden" name="lesson_id" value="{{ isset($lesson->id)?$lesson->id:$node->lesson_id }}">
+        <input type="hidden" name="type_id" value="1">
         <div class="form-group">
-            <div class="row justify-content-center">
-                <div class="col-6 col-md-4 my-2">
-                    <div class="thumbnail-image-edit">
-                        <img id="imagePreview{{ !isset($create) && isset($node) && $node ? $node->id : '' }}"
-                            src="{{ !isset($create) && isset($node) && $node ? asset("/img/$node->image") : asset('/img/picture.svg') }}"
-                            class="img-edit">
-                    </div>
+            <label for="inputPassword4">Nombre de referencia</label>
+            <input name="name" type="text" class="form-control" value="{{ !isset($create) && isset($node) && $node ? $node->name : '' }}"
+                placeholder="Escriba el nombre de referencia">
+        </div>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home{{ $id }}" role="tab" aria-controls="home" aria-selected="true">
+                    Contenido
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile{{ $id }}" role="tab" aria-controls="profile" aria-selected="false">
+                    Contenido en ingles
+                </a>
+            </li>
+          </ul>
+        <div class="tab-content" id="myTabContent{{ $id }}">
+            <div class="tab-pane fade show active" id="home{{ $id }}" role="tabpanel" aria-labelledby="home-tab">
+                <div class="form-group">
+                    <textarea name="content" required class="form-control ckeditor" rows="4" c id="editor{{ $id }}"
+                        placeholder="Ingrese el contenido">{{ !isset($create) && isset($node) && $node ? $node->content : '' }}</textarea>
                 </div>
-                <button class="btn btn-success rounded-circle btn-edit" type="button"
-                    onclick="escogerFoto('imagen{{ !isset($create) && isset($node) && $node ? $node->id : '' }}')">
-                    <i class="fas fa-pen"></i>
-                </button>
             </div>
-            <input required type="file" onchange="imagenPrevia(this,'imagePreview{{ !isset($create) && isset($node) && $node ? $node->id : '' }}')"
-                name="image" class="input-file" id="imagen{{ !isset($create) && isset($node) && $node ? $node->id : '' }}">
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="inputEmail4">Título</label>
-                <input required name="title" type="text" class="form-control" value="{{ !isset($create) && isset($node) && $node ? $node->title : '' }}"
-                    placeholder="Ingrese el título">
+            <div class="tab-pane fade" id="profile{{ $id }}" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="form-group">
+                    <textarea required class="form-control ckeditor" rows="4" name="content_english" id="editor{{ $id }}_english"
+                        placeholder="Ingrese el contenido">{{ !isset($create) && isset($node) && $node ? $node->content_english : '' }}</textarea>
+                </div>
             </div>
-            <div class="form-group col-md-6">
-                <label for="inputPassword4">Título en inglés</label>
-                <input required name="title_english" type="text" class="form-control" value="{{ !isset($create) && isset($node) && $node ? $node->title_english : '' }}"
-                    placeholder="Ingrese el título">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="inputAddress">Contenido</label>
-            <textarea required class="form-control" rows="4" name="content"
-                placeholder="Ingrese el contenido">{{ !isset($create) && isset($node) && $node ? $node->content : '' }}</textarea>
-        </div>
-        <div class="form-group">
-            <label for="inputAddress">Contenido en ingles</label>
-            <textarea required class="form-control" rows="4" name="content_english"
-                placeholder="Ingrese el contenido">{{ !isset($create) && isset($node) && $node ? $node->content_english : '' }}</textarea>
         </div>
         @overwrite
 

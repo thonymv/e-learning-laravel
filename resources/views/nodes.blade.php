@@ -32,42 +32,42 @@
         @endif
         <div class="row">
             <div class="col-xl-3 col-md-6">
-                <div class="card bg-primary text-white mb-4">
-                    <div class="card-body">
-                        <p class="h5 m-0">{{ count($nodes) }}</p>
-                    </div>
-                    <div class="card-footer d-flex align-items-center justify-content-between">
-                        <p class="small text-white m-0">Nodos totales</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-md-6">
                 <div class="card bg-success text-white mb-4">
                     <div class="card-body">
-                        <p class="h5 m-0">{{ $nodesActive }}</p>
+                        <p class="h5 m-0">{{ $nodesContent }}</p>
                     </div>
                     <div class="card-footer d-flex align-items-center justify-content-between">
-                        <p class="small text-white m-0">Nodos activos</p>
+                        <p class="small text-white m-0">Nodos tipo <strong>Contenido</strong></p>
                     </div>
                 </div>
             </div>
             <div class="col-xl-3 col-md-6">
-                <div class="card bg-warning text-white mb-4">
+                <div class="card bg-primary text-white mb-4">
                     <div class="card-body">
-                        <p class="h5 m-0">{{ count($nodes) - $nodesActive }}</p>
+                        <p class="h5 m-0">{{ $nodesTF }}</p>
                     </div>
                     <div class="card-footer d-flex align-items-center justify-content-between">
-                        <p class="small text-white m-0">Nodos inactivos</p>
+                        <p class="small text-white m-0">Nodos tipo <strong>Verdadero o Falso</strong></p>
                     </div>
                 </div>
             </div>
             <div class="col-xl-3 col-md-6">
-                <div class="card bg-danger text-white mb-4">
+                <div class="card bg-info text-white mb-4">
                     <div class="card-body">
-                        <p class="h5 m-0">{{ $nodesEmpty }}</p>
+                        <p class="h5 m-0">{{ $nodesSelect }}</p>
                     </div>
                     <div class="card-footer d-flex align-items-center justify-content-between">
-                        <p class="small text-white m-0">Nodos vacíos</p>
+                        <p class="small text-white m-0">Nodos tipo <strong>Selección simple</strong></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-secondary text-white mb-4">
+                    <div class="card-body">
+                        <p class="h5 m-0">{{ $nodesOrganize }}</p>
+                    </div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <p class="small text-white m-0">Nodos tipo <strong>Reorganizar lista</strong></p>
                     </div>
                 </div>
             </div>
@@ -103,7 +103,7 @@
                         "create"=>true,
                         "url"=>"/courses/$course->id/modules/$module->id/lessons/$lesson->id/nodes"
                         ])
-                        <button title="Registrar &quot;Reorganizar elementos&quot;" data-target="#modalRegisterR" data-toggle="modal" class="btn btn-dark list-type-node p-0 ml-2">
+                        <button title="Registrar &quot;Reorganizar elementos&quot;" data-target="#modalRegisterR" data-toggle="modal" class="btn btn-secondary list-type-node p-0 ml-2">
                             @svg('top', 'svg-content')
                         </button>
                         @include('subview.modal_edit_node_r',[
@@ -120,8 +120,7 @@
                         <thead class="thead-light">
                             <tr>
                                 <th>Tipo</th>
-                                <th>Título</th>
-                                <th>Título en ingles</th>
+                                <th>Nombre</th>
                                 <th>Creado en</th>
                                 <th>Modificado en</th>
                                 <th>Opciones</th>
@@ -133,8 +132,7 @@
                         <tfoot class="thead-light">
                             <tr>
                                 <th>Tipo</th>
-                                <th>Título</th>
-                                <th>Título en ingles</th>
+                                <th>Nombre</th>
                                 <th>Creado en</th>
                                 <th>Modificado en</th>
                                 <th>Opciones</th>
@@ -164,17 +162,14 @@
                                                 </button>
                                                 @break
                                             @case(4)
-                                                <button class="btn btn-dark list-type-node p-0">
+                                                <button class="btn btn-secondary list-type-node p-0">
                                                     @svg('top', 'svg-content')
                                                 </button>
                                                 @break
                                         @endswitch
                                     </td>
                                     <td>
-                                        {{ $node->title }}
-                                    </td>
-                                    <td>
-                                        {{ $node->title_english }}
+                                        {{ $node->name }}
                                     </td>
                                     <td>{{ $node->created_at }}</td>
                                     <td>{{ $node->updated_at }}</td>

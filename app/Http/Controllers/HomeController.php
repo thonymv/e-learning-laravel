@@ -153,14 +153,28 @@ class HomeController extends Controller
             abort(404);
         }
         $nodes = node_lesson::where('lesson_id',$id_lesson)->paginate(5);
-        $nodesActive = 0;
-        $nodesEmpty = 0;
+        $nodesContent = 0;
+        $nodesTF = 0;
+        $nodesSelect = 0;
+        $nodesOrganize = 0;
         foreach ($nodes as $node) {
-            if ($node["status"] > 0) {
-                ++$nodesActive;
-            }
-            if (count($node->options) < 1) {
-                ++$nodesEmpty;
+            switch ($node["type_id"]) {
+                case 1://Node type Content
+                    ++$nodesContent;
+                    break;
+                case 2://Node type True or False
+                    ++$nodesTF;
+                    break;
+                case 3://Node type Select
+                    ++$nodesSelect;
+                    break;
+                case 4://Node type organize
+                    ++$nodesOrganize;
+                    break;
+    
+                default:
+
+                    break;
             }
         }
         $page = $nodes->toArray();
@@ -168,18 +182,16 @@ class HomeController extends Controller
         unset($course["modules"]);
         unset($module["lessons"]);
         unset($lesson["options"]);
-        //$files = Storage::files('img');
-        //$visibility = Storage::url('img/1618363814.jpg');
-        //echo '<img src="'.asset("$visibility").'" />';exit();
         return view('nodes',[
             'course'=>$course,
             'module'=>$module,
             'lesson'=>$lesson,
             'nodes'=>$nodes,
             'page' => $page,
-            'nodesActive'=>$nodesActive,
-            'nodesEmpty'=>$nodesEmpty,
-            //'files'=>$files,
+            'nodesContent'=>$nodesContent,
+            'nodesTF'=>$nodesTF,
+            'nodesSelect'=>$nodesSelect,
+            'nodesOrganize'=>$nodesOrganize,
             'message'=>$message,
             'err'=>$err
         ]);
@@ -190,11 +202,6 @@ class HomeController extends Controller
         $err = false;
         $data = $request->all();
         $data["success"] = false;
-        $file = $this->put_file($request);
-        if(!$file){
-            return $this->nodes($id_course,$id_module,$id_lesson,$message,$err);
-        }
-        $data["image"] = $file;
         if(node_lesson::create($data)){
             $message = "Se ha registrado el nodo tipo \"Contenido\" exitosamente";
             $err = false;
@@ -205,31 +212,33 @@ class HomeController extends Controller
     public function node_register (Request $request,$id_course,$id_module,$id_lesson){
         $data = $request->all();
         switch (intval($data['type_id'])) {
-            case 1:
+            case 1://Node type Content
                 $this->node_content_register($request,$id_course,$id_module,$id_lesson);
                 break;
-            case 2:
-                
+            case 2://Node type True or False
+
                 break;
-            case 3:
-        
+            case 3://Node type Select
+
                 break;
-            case 4:
-            
+            case 4://Node type organize
+
                 break;
-            
+
             default:
                 # code...
                 break;
         }
     }
 
-    public function put_file(Request $request){
+    public function put_file(Request $request,$column_file,$extension){
         $time = time();
-        $path = $request->file('image')->storeAs(
-            'img', "$time.jpg" ,'public_file'
+        $disk = 'public_file';
+        $public_folder = 'img';
+        $path = $request->file($column_file)->storeAs(
+            $public_folder, "$time.$extension" , $disk
         );
-        return $path?"$time.jpg":false;
+        return $path?"$time.$extension":false;
     }
 
 }
