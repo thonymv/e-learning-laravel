@@ -35,16 +35,12 @@
           </ul>
         <div class="tab-content" id="myTabContent{{ $id }}">
             <div class="tab-pane fade show active" id="home{{ $id }}" role="tabpanel" aria-labelledby="home-tab">
-                <div class="form-group">
-                    <textarea name="content" required class="form-control ckeditor" rows="4" c id="editor{{ $id }}"
+                    <textarea name="content" required class="ckeditor" rows="4" id="editor{{ $id }}"
                         placeholder="Ingrese el contenido">{{ !isset($create) && isset($node) && $node ? $node->content : '' }}</textarea>
-                </div>
             </div>
             <div class="tab-pane fade" id="profile{{ $id }}" role="tabpanel" aria-labelledby="profile-tab">
-                <div class="form-group">
-                    <textarea required class="form-control ckeditor" rows="4" name="content_english" id="editor{{ $id }}_english"
+                    <textarea required class="ckeditor" rows="4" name="content_english" id="editor{{ $id }}_english"
                         placeholder="Ingrese el contenido">{{ !isset($create) && isset($node) && $node ? $node->content_english : '' }}</textarea>
-                </div>
             </div>
         </div>
         @overwrite
@@ -72,5 +68,4 @@
                     document.getElementById(id).click()
                 }
             }
-
         </script>

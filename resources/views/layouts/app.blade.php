@@ -193,8 +193,20 @@ $select = isset(View::getSections()['select']) ? View::getSections()['select'] :
                         $('body').css("padding-right", "17px");
                     }
                 });
-            });
 
+                //// CKEditor compatibility with modal bootstrap
+                $.fn.modal.Constructor.prototype._enforceFocus = function () {
+                    modal_this = this
+                    $(document).on('focusin.modal', function (e) {
+                        if (modal_this._element[0] !== e.target && modal_this._element.has && !modal_this._element.has(e.target).length
+                        && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_select')
+                        && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_textarea')
+                        && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_text')) {
+                            modal_this._element.focus()
+                        }
+                    })
+                }
+            });
         </script>
     </body>
 

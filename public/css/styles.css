@@ -10297,8 +10297,10 @@ body {
     border-radius: 40px!important;
 }
 
-
-
+.cke_dialog
+{
+    z-index: 10055!important;
+}
 
 
 
