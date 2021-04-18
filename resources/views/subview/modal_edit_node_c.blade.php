@@ -1,7 +1,8 @@
 @extends('subview.modal',[
     'id'=>$id,
     'id_form'=>"form_$id",
-    'action'=>$url
+    'action'=>$url,
+    'cancel'=>"resetForm('form_$id')"
 ])
 @if (isset($create))
     @section('title-modal')

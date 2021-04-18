@@ -17,7 +17,7 @@
                     @yield('content-modal')
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-secondary" onclick="{{ isset($cancel)?$cancel:'' }}" data-dismiss="modal">Cancelar</button>
                     @yield('button-modal')
                 </div>
             </div>

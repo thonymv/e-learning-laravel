@@ -35,6 +35,9 @@ CKEDITOR.editorConfig = function( config ) {
 	// Simplify the dialog windows.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
 
+    //add plugin to embed video
     config.extraPlugins = 'videoembed';
 
+    //allow use of iframe in source mode
+    config.allowedContent = true;
 };
