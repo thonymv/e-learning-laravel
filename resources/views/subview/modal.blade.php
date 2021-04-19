@@ -17,7 +17,7 @@
                     @yield('content-modal')
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="{{ isset($cancel)?$cancel:'' }}" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     @yield('button-modal')
                 </div>
             </div>
@@ -25,4 +25,14 @@
             </form>
         @endif
     </div>
+    <script>
+        window.addEventListener('load', function() {
+            var id = "{{ $id }}"
+            $('#'+id).on('hidden.bs.modal', function () {
+                @php
+                    echo isset($cancel)?$cancel:''
+                @endphp
+            })
+        })
+    </script>
 </div>

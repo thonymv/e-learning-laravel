@@ -2,7 +2,7 @@
     'id'=>$id,
     'id_form'=>"form_$id",
     'action'=>$url,
-    'cancel'=>"resetForm('form_$id')"
+    'cancel'=>isset($create)?"resetForm('form_$id')":""
 ])
 @if (isset($create))
     @section('title-modal')
@@ -33,40 +33,18 @@
                     Contenido en ingles
                 </a>
             </li>
-          </ul>
+        </ul>
         <div class="tab-content" id="myTabContent{{ $id }}">
             <div class="tab-pane fade show active" id="home{{ $id }}" role="tabpanel" aria-labelledby="home-tab">
-                    <textarea name="content" required class="ckeditor" rows="4" id="editor{{ $id }}"
-                        placeholder="Ingrese el contenido">{{ !isset($create) && isset($node) && $node ? $node->content : '' }}</textarea>
+                <textarea name="content" required class="ckeditor" rows="4" id="editor{{ $id }}"
+                    placeholder="Ingrese el contenido">{{ !isset($create) && isset($node) && $node ? $node->content : '' }}</textarea>
             </div>
             <div class="tab-pane fade" id="profile{{ $id }}" role="tabpanel" aria-labelledby="profile-tab">
-                    <textarea required class="ckeditor" rows="4" name="content_english" id="editor{{ $id }}_english"
-                        placeholder="Ingrese el contenido">{{ !isset($create) && isset($node) && $node ? $node->content_english : '' }}</textarea>
+                <textarea required class="ckeditor" rows="4" name="content_english" id="editor{{ $id }}_english"
+                    placeholder="Ingrese el contenido">{{ !isset($create) && isset($node) && $node ? $node->content_english : '' }}</textarea>
             </div>
         </div>
         @overwrite
-
     @section('button-modal')
         <input class="btn btn-success" type="submit" value="Guardar">
         @overwrite
-
-        <script>
-            if (typeof imagenPrevia === "undefined") {
-
-                function imagenPrevia(input, idImg) {
-                    if (input.files && input.files[0]) {
-                        var reader = new FileReader()
-                        reader.onload = function(e) {
-                            imgHtml = document.getElementById(idImg);
-                            imgHtml.src = e.target.result
-
-                        }
-                        reader.readAsDataURL(input.files[0])
-                    }
-                }
-
-                function escogerFoto(id) {
-                    document.getElementById(id).click()
-                }
-            }
-        </script>
