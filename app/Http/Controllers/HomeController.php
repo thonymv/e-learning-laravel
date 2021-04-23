@@ -143,8 +143,53 @@ class HomeController extends Controller
         ]);
     }
 
-
     public function nodes($id_course,$id_module,$id_lesson,$message = "",$err = false)
+    {
+        return view('nodes',$this->getDataNodes($id_course,$id_module,$id_lesson,$message,$err));
+    }
+
+    public function node_content_register(Request $request,$id_course,$id_module,$id_lesson){
+        $message = "Hubo un error al registrar el nodo tipo \"Contenido\" ";
+        $err = false;
+        $data = $request->all();
+        $data["success"] = false;
+        if(node_lesson::create($data)){
+            $message = "Se ha registrado el nodo tipo \"Contenido\" exitosamente";
+            $err = false;
+        }
+        return view('nodes',$this->getDataNodes($id_course,$id_module,$id_lesson,$message,$err));
+    }
+
+    public function node_vf_register(Request $request,$id_course,$id_module,$id_lesson){
+        $message = "Hubo un error al registrar el nodo tipo \"Verdadero o Falso\" ";
+        $err = false;
+        $data = $request->all();
+        $data["success"] = isset($data["success"])?true:false;
+        if(node_lesson::create($data)){
+            $message = "Se ha registrado el nodo tipo \"Verdadero o Falso\" exitosamente";
+            $err = false;
+        }
+        return view('nodes',$this->getDataNodes($id_course,$id_module,$id_lesson,$message,$err));
+    }
+
+    public function node_register (Request $request,$id_course,$id_module,$id_lesson){
+        $data = $request->all();
+        switch (intval($data['type_id'])) {
+            case 1://Node type Content
+                return $this->node_content_register($request,$id_course,$id_module,$id_lesson);
+            case 2://Node type True or False
+                return $this->node_vf_register($request,$id_course,$id_module,$id_lesson);
+            case 3://Node type Select
+                break;
+            case 4://Node type organize
+                break;
+            default:
+                # code...
+                break;
+        }
+    }
+    
+    public function getDataNodes($id_course,$id_module,$id_lesson,$message = "",$err = false)
     {
         $course = Course::find($id_course);
         $module = Module::find($id_module);
@@ -182,7 +227,7 @@ class HomeController extends Controller
         unset($course["modules"]);
         unset($module["lessons"]);
         unset($lesson["options"]);
-        return view('nodes',[
+        return [
             'course'=>$course,
             'module'=>$module,
             'lesson'=>$lesson,
@@ -194,41 +239,7 @@ class HomeController extends Controller
             'nodesOrganize'=>$nodesOrganize,
             'message'=>$message,
             'err'=>$err
-        ]);
-    }
-
-    public function node_content_register(Request $request,$id_course,$id_module,$id_lesson){
-        $message = "Hubo un error al registrar el nodo tipo \"Contenido\" ";
-        $err = false;
-        $data = $request->all();
-        $data["success"] = false;
-        if(node_lesson::create($data)){
-            $message = "Se ha registrado el nodo tipo \"Contenido\" exitosamente";
-            $err = false;
-        }
-        return $this->nodes($id_course,$id_module,$id_lesson,$message,$err);
-    }
-
-    public function node_register (Request $request,$id_course,$id_module,$id_lesson){
-        $data = $request->all();
-        switch (intval($data['type_id'])) {
-            case 1://Node type Content
-                $this->node_content_register($request,$id_course,$id_module,$id_lesson);
-                break;
-            case 2://Node type True or False
-
-                break;
-            case 3://Node type Select
-
-                break;
-            case 4://Node type organize
-
-                break;
-
-            default:
-                # code...
-                break;
-        }
+        ];
     }
 
     public function put_file(Request $request,$column_file,$extension){

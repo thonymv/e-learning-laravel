@@ -207,6 +207,7 @@ $select = isset(View::getSections()['select']) ? View::getSections()['select'] :
                         }
                     })
                 }
+                
             });
         </script>
     </body>

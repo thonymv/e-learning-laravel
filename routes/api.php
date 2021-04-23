@@ -59,6 +59,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('section/{id}', [SectionController::class, 'getSection']); //agregar soporte de ingles
     Route::get('course', [CourseController::class, 'getCourses']); //agregar soporte de ingles
     Route::get('course/{id}', [CourseController::class, 'getCourse']); //agregar soporte de ingles
+    Route::get('lesson/{id}', [LessonController::class, 'getLesson']); //
 
     //payment mercadopago (mp)
     Route::get('course/{id}/mp/{id_pay}', [CourseController::class, 'paymentMp']);

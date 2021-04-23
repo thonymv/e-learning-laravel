@@ -20,4 +20,4 @@ Route::get('/courses/{id}/modules', 'HomeController@modules')->name('modules');
 Route::get('/courses/{id_course}/modules/{id_module}/lessons', 'HomeController@lessons')->name('lessons');
 Route::get('/courses/{id_course}/modules/{id_module}/lessons/{id_lesson}/nodes', 'HomeController@nodes')->name('nodes');
 
-Route::post('/courses/{id_course}/modules/{id_module}/lessons/{id_lesson}/nodes', 'HomeController@node_content_register')->name('node_content');
+Route::post('/courses/{id_course}/modules/{id_module}/lessons/{id_lesson}/nodes', 'HomeController@node_register')->name('node_content');
